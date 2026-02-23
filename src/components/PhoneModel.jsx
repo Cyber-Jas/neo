@@ -243,7 +243,7 @@ function ShoulderTriggers() {
   return (
     <group>
       {/* Right trigger (top, R1) */}
-      <RoundedBox args={[bw, triggerH, bd]} radius={0.006} smoothness={4} position={[xRight, yTop, 0]}>
+      <RoundedBox args={[bw, triggerH, bd]} radius={0.006} smoothness={4} position={[xLeft, yTop, 0]}>
         <meshPhysicalMaterial color="#c8ccd0" metalness={0.9} roughness={0.1} />
       </RoundedBox>
       {/* Left trigger (bottom, L1) */}
@@ -371,7 +371,7 @@ export default function PhoneModel({ activeFeature }) {
         active={activeFeature === 'processor'}
       />
       <HotspotDot
-        position={[-(BODY_W / 2 + 0.008), -(BODY_H / 2) + 0.35, 0]}
+        position={[-(BODY_W / 2 + 0.008), BODY_H / 2 - 0.35, 0]}
         feature="triggers"
         active={activeFeature === 'triggers'}
       />

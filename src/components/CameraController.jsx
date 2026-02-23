@@ -9,7 +9,7 @@ const CAMERA_POSITIONS = {
   display: { position: [0, 0.15, 2], target: [0, 0.15, 0] },
   camera: { position: [0.4, 0.7, -2.2], target: [0, 0.6, -0.1] },
   processor: { position: [0, -0.3, 2.2], target: [0, -0.3, 0] },
-  triggers: { position: [2.2, 0.8, 1.2], target: [0.5, 0.8, 0] },
+  triggers: { position: [-2.2, 0.8, 1.2], target: [-0.5, 0.8, 0] },
   battery: { position: [0, -1.2, 2.2], target: [0, -1, 0] },
 }
 
