@@ -371,7 +371,7 @@ export default function PhoneModel({ activeFeature }) {
         active={activeFeature === 'processor'}
       />
       <HotspotDot
-        position={[BODY_W / 2 + 0.008, BODY_H / 2 - 0.35, 0]}
+        position={[-(BODY_W / 2 + 0.008), -(BODY_H / 2) + 0.35, 0]}
         feature="triggers"
         active={activeFeature === 'triggers'}
       />
