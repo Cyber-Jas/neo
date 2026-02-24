@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Scene3D from './components/Scene3D'
 import FeaturePanel from './components/FeaturePanel'
@@ -35,6 +35,22 @@ export default function App() {
   const handleLoaded = useCallback(() => {
     setIsLoaded(true)
   }, [])
+
+  // Close modals/panels on browser/phone back button
+  const isModalOpen = activeFeature !== 'default' || showSpecsModal || showComparison
+  useEffect(() => {
+    if (isModalOpen) {
+      window.history.pushState({ modal: true }, '')
+      const onPopState = () => {
+        setActiveFeature('default')
+        setAutoRotate(true)
+        setShowSpecsModal(false)
+        setShowComparison(false)
+      }
+      window.addEventListener('popstate', onPopState)
+      return () => window.removeEventListener('popstate', onPopState)
+    }
+  }, [isModalOpen])
 
   return (
     <div className="app">
