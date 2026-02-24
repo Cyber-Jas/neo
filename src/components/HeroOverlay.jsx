@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 
-export default function HeroOverlay({ visible }) {
+export default function HeroOverlay({ visible, onExplore }) {
   if (!visible) return null
 
   return (
@@ -11,6 +11,17 @@ export default function HeroOverlay({ visible }) {
       transition={{ delay: 1.2, duration: 1 }}
     >
       <div className="hero-text-left">
+        <motion.div
+          className="hero-eyebrow"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.3, duration: 0.6 }}
+        >
+          <span className="eyebrow-line" />
+          <span className="eyebrow-text">INTRODUCING</span>
+          <span className="eyebrow-line" />
+        </motion.div>
+
         <motion.h2
           className="hero-tagline"
           initial={{ opacity: 0, x: -60 }}
@@ -42,6 +53,30 @@ export default function HeroOverlay({ visible }) {
           <span className="price-label">Starting at</span>
           <span className="price-value">$199</span>
         </motion.div>
+
+        <motion.div
+          className="hero-cta-group"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 2.3, duration: 0.6 }}
+        >
+          <motion.button
+            className="hero-cta-primary"
+            whileHover={{ scale: 1.05, boxShadow: '0 0 30px rgba(255, 10, 10, 0.5)' }}
+            whileTap={{ scale: 0.95 }}
+            onClick={onExplore}
+          >
+            Explore Features
+          </motion.button>
+          <motion.a
+            href="#"
+            className="hero-cta-secondary"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            Buy Now →
+          </motion.a>
+        </motion.div>
       </div>
 
       <div className="hero-text-right">
@@ -66,3 +101,4 @@ export default function HeroOverlay({ visible }) {
     </motion.div>
   )
 }
+

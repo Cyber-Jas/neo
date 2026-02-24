@@ -15,6 +15,8 @@ export default function FeatureNav({ activeFeature, onFeatureClick }) {
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      role="navigation"
+      aria-label="Phone features"
     >
       {FEATURES_LIST.map((feature) => (
         <motion.button
@@ -23,6 +25,15 @@ export default function FeatureNav({ activeFeature, onFeatureClick }) {
           onClick={() => onFeatureClick(feature.id)}
           whileHover={{ scale: 1.05, y: -3 }}
           whileTap={{ scale: 0.95 }}
+          aria-label={`View ${feature.label}: ${feature.shortDesc}`}
+          aria-pressed={activeFeature === feature.id}
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault()
+              onFeatureClick(feature.id)
+            }
+          }}
         >
           <span className="feature-nav-icon">{feature.icon}</span>
           <span className="feature-nav-label">{feature.label}</span>

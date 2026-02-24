@@ -6,6 +6,9 @@ import FeatureNav from './components/FeatureNav'
 import Header from './components/Header'
 import HeroOverlay from './components/HeroOverlay'
 import LoadingScreen from './components/LoadingScreen'
+import GuidedTour from './components/GuidedTour'
+import FeatureHighlights from './components/FeatureHighlights'
+import ComparisonTable from './components/ComparisonTable'
 import './App.css'
 
 export default function App() {
@@ -13,6 +16,7 @@ export default function App() {
   const [isLoaded, setIsLoaded] = useState(false)
   const [autoRotate, setAutoRotate] = useState(true)
   const [showSpecsModal, setShowSpecsModal] = useState(false)
+  const [showComparison, setShowComparison] = useState(false)
 
   const handleFeatureClick = useCallback((feature) => {
     if (activeFeature === feature) {
@@ -49,7 +53,17 @@ export default function App() {
           />
         </div>
 
-        <HeroOverlay visible={isLoaded && activeFeature === 'default'} />
+        <HeroOverlay
+          visible={isLoaded && activeFeature === 'default'}
+          onExplore={() => handleFeatureClick('display')}
+        />
+
+        <FeatureHighlights visible={isLoaded && activeFeature === 'default'} />
+
+        <GuidedTour
+          onFeatureClick={handleFeatureClick}
+          visible={isLoaded && activeFeature === 'default'}
+        />
 
         <FeaturePanel
           activeFeature={activeFeature === 'default' ? null : activeFeature}
@@ -66,7 +80,7 @@ export default function App() {
             <span className="footer-text">nubia Neo 3 GT &mdash; Game Beyond Limits</span>
             <div className="footer-links">
               <a href="#" onClick={(e) => { e.preventDefault(); setShowSpecsModal(true); }}>Specs</a>
-              <a href="#">Compare</a>
+              <a href="#" onClick={(e) => { e.preventDefault(); setShowComparison(true); }}>Compare</a>
               <a href="#">Support</a>
             </div>
           </div>
@@ -208,6 +222,12 @@ export default function App() {
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* Comparison Table */}
+        <ComparisonTable
+          visible={showComparison}
+          onClose={() => setShowComparison(false)}
+        />
       </div>
     </div>
   )

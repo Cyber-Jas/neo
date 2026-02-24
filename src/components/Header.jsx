@@ -10,6 +10,7 @@ export default function Header({ showHeader }) {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -40 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          role="banner"
         >
           <div className="header-left">
             <div className="logo">
@@ -26,6 +27,7 @@ export default function Header({ showHeader }) {
               className="header-cta"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              aria-label="Buy nubia NEO 3 GT"
             >
               Buy Now
             </motion.a>
