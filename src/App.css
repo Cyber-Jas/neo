@@ -713,9 +713,12 @@ body {
 .feature-highlights {
   position: fixed;
   bottom: 28px;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
+  right: 0;
   z-index: 50;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
 }
 
 .highlights-grid {
@@ -730,6 +733,7 @@ body {
   border-radius: 16px;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  pointer-events: auto;
 }
 
 .highlight-card {
@@ -1251,7 +1255,7 @@ a:focus-visible {
   }
 
   .feature-highlights {
-    bottom: 12px;
+    bottom: 40px;
     width: auto;
     max-width: 95vw;
   }

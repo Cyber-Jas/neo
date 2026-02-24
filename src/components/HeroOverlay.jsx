@@ -53,30 +53,6 @@ export default function HeroOverlay({ visible, onExplore }) {
           <span className="price-label">Starting at</span>
           <span className="price-value">$199</span>
         </motion.div>
-
-        <motion.div
-          className="hero-cta-group"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 2.3, duration: 0.6 }}
-        >
-          <motion.button
-            className="hero-cta-primary"
-            whileHover={{ scale: 1.05, boxShadow: '0 0 30px rgba(255, 10, 10, 0.5)' }}
-            whileTap={{ scale: 0.95 }}
-            onClick={onExplore}
-          >
-            Explore Features
-          </motion.button>
-          <motion.a
-            href="#"
-            className="hero-cta-secondary"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Buy Now →
-          </motion.a>
-        </motion.div>
       </div>
 
       <div className="hero-text-right">
