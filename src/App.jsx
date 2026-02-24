@@ -43,7 +43,11 @@ export default function App() {
       <div className={`app-content ${isLoaded ? 'loaded' : ''}`}>
         <Header showHeader={isLoaded} />
 
-        <div className="canvas-container">
+        <div className="canvas-container" onClick={() => {
+          if (activeFeature !== 'default') {
+            handleClosePanel()
+          }
+        }}>
           <div className="canvas-bg" />
           <Scene3D
             activeFeature={activeFeature}

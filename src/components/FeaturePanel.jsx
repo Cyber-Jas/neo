@@ -95,6 +95,7 @@ export default function FeaturePanel({ activeFeature, onClose }) {
           animate={{ opacity: 1, x: 0, scale: 1 }}
           exit={{ opacity: 0, x: 100, scale: 0.9 }}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          onClick={(e) => e.stopPropagation()}
         >
           <button className="feature-panel-close" onClick={onClose}>
             <span>✕</span>
