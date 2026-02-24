@@ -2,7 +2,6 @@ import { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Scene3D from './components/Scene3D'
 import FeaturePanel from './components/FeaturePanel'
-import FeatureNav from './components/FeatureNav'
 import Header from './components/Header'
 import HeroOverlay from './components/HeroOverlay'
 import LoadingScreen from './components/LoadingScreen'
@@ -58,7 +57,11 @@ export default function App() {
           onExplore={() => handleFeatureClick('display')}
         />
 
-        <FeatureHighlights visible={isLoaded && activeFeature === 'default'} />
+        <FeatureHighlights
+          visible={isLoaded}
+          activeFeature={activeFeature}
+          onFeatureClick={handleFeatureClick}
+        />
 
         <GuidedTour
           onFeatureClick={handleFeatureClick}
@@ -70,10 +73,6 @@ export default function App() {
           onClose={handleClosePanel}
         />
 
-        <FeatureNav
-          activeFeature={activeFeature}
-          onFeatureClick={handleFeatureClick}
-        />
 
         {isLoaded && (
           <div className="footer-bar">

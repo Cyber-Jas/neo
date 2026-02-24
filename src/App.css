@@ -436,78 +436,6 @@ body {
   text-transform: uppercase;
 }
 
-/* ===== FEATURE NAV ===== */
-.feature-nav {
-  position: fixed;
-  bottom: 28px;
-  left: 50%;
-  margin-left: -300px;
-  z-index: 50;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 8px;
-  width: 600px;
-  max-width: 90vw;
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  border-radius: 16px;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-}
-
-.feature-nav-btn {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  padding: 12px 20px;
-  background: transparent;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  color: var(--text-secondary);
-  transition: all 0.3s ease;
-  min-width: 80px;
-}
-
-.feature-nav-btn:hover {
-  color: var(--text-primary);
-  background: rgba(255, 255, 255, 0.04);
-}
-
-.feature-nav-btn.active {
-  color: var(--text-primary);
-}
-
-.feature-nav-icon {
-  font-size: 20px;
-}
-
-.feature-nav-label {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-}
-
-.feature-nav-desc {
-  font-size: 9px;
-  color: var(--text-muted);
-  white-space: nowrap;
-}
-
-.feature-nav-indicator {
-  position: absolute;
-  inset: 0;
-  border-radius: 12px;
-  background: rgba(255, 10, 10, 0.1);
-  border: 1px solid rgba(255, 10, 10, 0.3);
-  z-index: -1;
-}
-
 /* ===== FEATURE PANEL ===== */
 .feature-panel {
   position: fixed;
@@ -781,41 +709,59 @@ body {
   font-weight: 600;
 }
 
-/* ===== FEATURE HIGHLIGHTS ===== */
+/* ===== FEATURE HIGHLIGHTS (Bottom Nav) ===== */
 .feature-highlights {
   position: fixed;
-  left: 50px;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 10;
-  pointer-events: none;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
 }
 
 .highlights-grid {
   display: flex;
-  flex-direction: column;
-  gap: 12px;
+  flex-direction: row;
+  gap: 6px;
+  padding: 8px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
 .highlight-card {
+  position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 14px;
-  padding: 12px 18px;
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  border-radius: 14px;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  pointer-events: auto;
-  cursor: default;
-  min-width: 200px;
+  gap: 6px;
+  padding: 12px 20px;
+  background: transparent;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  color: var(--text-secondary);
   transition: all 0.3s ease;
+  min-width: 90px;
 }
 
 .highlight-card:hover {
-  border-color: rgba(255, 10, 10, 0.3);
-  background: rgba(255, 10, 10, 0.05);
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.highlight-card.active {
+  color: var(--text-primary);
+}
+
+.highlight-active-indicator {
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  background: rgba(255, 10, 10, 0.1);
+  border: 1px solid rgba(255, 10, 10, 0.3);
+  z-index: -1;
 }
 
 .highlight-icon-wrap {
@@ -826,15 +772,15 @@ body {
 }
 
 .highlight-icon {
-  font-size: 22px;
+  font-size: 20px;
   position: relative;
   z-index: 1;
 }
 
 .highlight-glow {
   position: absolute;
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   opacity: 0.12;
   filter: blur(8px);
@@ -843,21 +789,22 @@ body {
 .highlight-text {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 2px;
 }
 
 .highlight-title {
   font-family: 'Orbitron', sans-serif;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0.5px;
-  color: var(--text-primary);
+  text-transform: uppercase;
 }
 
 .highlight-subtitle {
-  font-size: 10px;
+  font-size: 9px;
   color: var(--text-muted);
-  letter-spacing: 0.5px;
+  white-space: nowrap;
 }
 
 /* ===== GUIDED TOUR ===== */
@@ -1257,13 +1204,9 @@ a:focus-visible {
     padding: 12px 24px;
   }
 
-  .feature-highlights {
-    left: 20px;
-  }
-
   .highlight-card {
-    min-width: 170px;
-    padding: 10px 14px;
+    min-width: 80px;
+    padding: 10px 16px;
   }
 
   .comparison-header-row,
@@ -1302,29 +1245,23 @@ a:focus-visible {
   }
 
   .feature-highlights {
-    position: fixed;
-    left: 0;
-    right: 0;
-    top: auto;
-    bottom: 90px;
-    transform: none;
-    padding: 0 16px;
+    bottom: 12px;
+    width: auto;
+    max-width: 95vw;
   }
 
   .highlights-grid {
-    flex-direction: row;
-    overflow-x: auto;
-    padding-bottom: 8px;
-    scrollbar-width: none;
-  }
-
-  .highlights-grid::-webkit-scrollbar {
-    display: none;
+    gap: 2px;
+    padding: 6px;
   }
 
   .highlight-card {
-    min-width: 150px;
-    flex-shrink: 0;
+    padding: 8px 12px;
+    min-width: 60px;
+  }
+
+  .highlight-subtitle {
+    display: none;
   }
 
   .feature-panel {
@@ -1338,24 +1275,6 @@ a:focus-visible {
     max-height: 55vh;
     border-radius: 20px 20px 0 0;
     text-align: center;
-  }
-
-  .feature-nav {
-    bottom: 12px;
-    left: 50%;
-    margin-left: -160px;
-    width: 320px;
-    gap: 2px;
-    padding: 6px;
-  }
-
-  .feature-nav-btn {
-    padding: 8px 12px;
-    min-width: 60px;
-  }
-
-  .feature-nav-desc {
-    display: none;
   }
 
   .header-badge {
@@ -1428,14 +1347,6 @@ a:focus-visible {
     letter-spacing: 4px;
   }
 
-  .feature-nav-label {
-    font-size: 9px;
-  }
-
-  .feature-nav-icon {
-    font-size: 16px;
-  }
-
   .header {
     padding: 10px 16px;
   }
@@ -1445,16 +1356,16 @@ a:focus-visible {
   }
 
   .highlight-card {
-    min-width: 130px;
-    padding: 8px 10px;
+    min-width: 50px;
+    padding: 6px 8px;
   }
 
   .highlight-title {
-    font-size: 10px;
+    font-size: 9px;
   }
 
-  .highlight-subtitle {
-    font-size: 9px;
+  .highlight-icon {
+    font-size: 16px;
   }
 
   .price-value {
