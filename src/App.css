@@ -721,6 +721,8 @@ body {
 .highlights-grid {
   display: flex;
   flex-direction: row;
+  align-items: center;
+  justify-content: center;
   gap: 6px;
   padding: 8px;
   background: var(--glass-bg);
