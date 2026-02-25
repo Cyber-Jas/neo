@@ -763,6 +763,23 @@ body {
   color: var(--text-primary);
 }
 
+/* Pulse animation when a hotspot click activates this card */
+.highlight-card.hotspot-pulse {
+  animation: hotspot-nav-pulse 0.7s ease-out;
+}
+
+@keyframes hotspot-nav-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 10, 10, 0.5);
+  }
+  40% {
+    box-shadow: 0 0 12px 6px rgba(255, 10, 10, 0.35);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 10, 10, 0);
+  }
+}
+
 .highlight-active-indicator {
   position: absolute;
   inset: 0;

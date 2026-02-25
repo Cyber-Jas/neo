@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Scene3D from './components/Scene3D'
 import FeaturePanel from './components/FeaturePanel'
@@ -16,6 +16,8 @@ export default function App() {
   const [autoRotate, setAutoRotate] = useState(true)
   const [showSpecsModal, setShowSpecsModal] = useState(false)
   const [showComparison, setShowComparison] = useState(false)
+  const [hotspotTriggered, setHotspotTriggered] = useState(false)
+  const hotspotClickRef = useRef(false)
 
   const handleFeatureClick = useCallback((feature) => {
     if (activeFeature === feature) {
@@ -26,6 +28,15 @@ export default function App() {
       setAutoRotate(false)
     }
   }, [activeFeature])
+
+  // Separate handler for hotspot clicks to prevent canvas-container close conflict
+  const handleHotspotClick = useCallback((feature) => {
+    hotspotClickRef.current = true
+    setHotspotTriggered(true)
+    handleFeatureClick(feature)
+    // Reset the pulse trigger after the animation
+    setTimeout(() => setHotspotTriggered(false), 800)
+  }, [handleFeatureClick])
 
   const handleClosePanel = useCallback(() => {
     setActiveFeature('default')
@@ -60,6 +71,10 @@ export default function App() {
         <Header showHeader={isLoaded} />
 
         <div className="canvas-container" onClick={() => {
+          if (hotspotClickRef.current) {
+            hotspotClickRef.current = false
+            return
+          }
           if (activeFeature !== 'default') {
             handleClosePanel()
           }
@@ -67,7 +82,7 @@ export default function App() {
           <div className="canvas-bg" />
           <Scene3D
             activeFeature={activeFeature}
-            onHotspotClick={handleFeatureClick}
+            onHotspotClick={handleHotspotClick}
             autoRotate={autoRotate}
           />
         </div>
@@ -81,6 +96,7 @@ export default function App() {
           visible={isLoaded}
           activeFeature={activeFeature}
           onFeatureClick={handleFeatureClick}
+          hotspotTriggered={hotspotTriggered}
         />
 
         <GuidedTour

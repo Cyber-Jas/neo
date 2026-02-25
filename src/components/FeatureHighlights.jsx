@@ -1,3 +1,4 @@
+import { useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
 
 const HIGHLIGHT_FEATURES = [
@@ -38,7 +39,19 @@ const HIGHLIGHT_FEATURES = [
   },
 ]
 
-export default function FeatureHighlights({ visible, activeFeature, onFeatureClick }) {
+export default function FeatureHighlights({ visible, activeFeature, onFeatureClick, hotspotTriggered }) {
+  const cardRefs = useRef({})
+
+  // Scroll the active card into view when a hotspot is clicked
+  useEffect(() => {
+    if (hotspotTriggered && activeFeature && activeFeature !== 'default') {
+      const el = cardRefs.current[activeFeature]
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })
+      }
+    }
+  }, [activeFeature, hotspotTriggered])
+
   if (!visible) return null
 
   return (
@@ -51,33 +64,43 @@ export default function FeatureHighlights({ visible, activeFeature, onFeatureCli
       aria-label="Phone features"
     >
       <div className="highlights-grid">
-        {HIGHLIGHT_FEATURES.map((feat, i) => (
-          <motion.button
-            key={feat.id}
-            className={`highlight-card ${activeFeature === feat.id ? 'active' : ''}`}
-            onClick={() => onFeatureClick(feat.id)}
-            whileHover={{ y: -4, scale: 1.03 }}
-            whileTap={{ scale: 0.95 }}
-            aria-label={`View ${feat.title}: ${feat.subtitle}`}
-            aria-pressed={activeFeature === feat.id}
-          >
-            <div className="highlight-icon-wrap">
-              <span className="highlight-icon">{feat.icon}</span>
-              <div className="highlight-glow" style={{ background: feat.color }} />
-            </div>
-            <div className="highlight-text">
-              <span className="highlight-title">{feat.title}</span>
-              <span className="highlight-subtitle">{feat.subtitle}</span>
-            </div>
-            {activeFeature === feat.id && (
-              <motion.div
-                className="highlight-active-indicator"
-                layoutId="highlightIndicator"
-                transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-              />
-            )}
-          </motion.button>
-        ))}
+        {HIGHLIGHT_FEATURES.map((feat, i) => {
+          const isActive = activeFeature === feat.id
+          const wasHotspotActivated = isActive && hotspotTriggered
+
+          return (
+            <motion.button
+              key={feat.id}
+              ref={(el) => { cardRefs.current[feat.id] = el }}
+              className={`highlight-card ${isActive ? 'active' : ''} ${wasHotspotActivated ? 'hotspot-pulse' : ''}`}
+              onClick={() => onFeatureClick(feat.id)}
+              whileHover={{ y: -4, scale: 1.03 }}
+              whileTap={{ scale: 0.95 }}
+              animate={wasHotspotActivated ? {
+                scale: [1, 1.12, 1],
+                transition: { duration: 0.5, ease: 'easeOut' }
+              } : {}}
+              aria-label={`View ${feat.title}: ${feat.subtitle}`}
+              aria-pressed={isActive}
+            >
+              <div className="highlight-icon-wrap">
+                <span className="highlight-icon">{feat.icon}</span>
+                <div className="highlight-glow" style={{ background: feat.color }} />
+              </div>
+              <div className="highlight-text">
+                <span className="highlight-title">{feat.title}</span>
+                <span className="highlight-subtitle">{feat.subtitle}</span>
+              </div>
+              {isActive && (
+                <motion.div
+                  className="highlight-active-indicator"
+                  layoutId="highlightIndicator"
+                  transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                />
+              )}
+            </motion.button>
+          )
+        })}
       </div>
     </motion.nav>
   )
