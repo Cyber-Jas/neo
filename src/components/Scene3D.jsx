@@ -62,7 +62,7 @@ export default function Scene3D({ activeFeature, onHotspotClick, autoRotate }) {
       <pointLight position={[3, 2, 4]} intensity={0.6} />
 
       {/* Phone model */}
-      <PhoneModel activeFeature={activeFeature} />
+      <PhoneModel activeFeature={activeFeature} onHotspotClick={onHotspotClick} />
 
       {/* Click handler for hotspots */}
       <ClickHandler onHotspotClick={onHotspotClick} />

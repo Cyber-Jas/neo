@@ -1,6 +1,7 @@
-import React, { useRef, useMemo } from 'react'
+import React, { useRef, useMemo, useState, useCallback } from 'react'
 import { useFrame, useLoader } from '@react-three/fiber'
 import { RoundedBox } from '@react-three/drei'
+import { HotspotTooltip } from './HotspotTooltip'
 import * as THREE from 'three'
 
 // Realistic smartphone proportions (~2.15:1 aspect ratio)
@@ -279,41 +280,79 @@ function BottomPorts() {
 }
 
 /* ─── Hotspot Dots ─── */
-function HotspotDot({ position, feature, active }) {
+function HotspotDot({ position, feature, active, onClick }) {
   const dotRef = useRef()
+  const [hovered, setHovered] = useState(false)
+
+  const handlePointerOver = useCallback((e) => {
+    e.stopPropagation()
+    setHovered(true)
+    document.body.style.cursor = 'pointer'
+  }, [])
+
+  const handlePointerOut = useCallback((e) => {
+    e.stopPropagation()
+    setHovered(false)
+    document.body.style.cursor = 'auto'
+  }, [])
+
+  const handleClick = useCallback((e) => {
+    e.stopPropagation()
+    if (onClick) onClick(feature)
+  }, [onClick, feature])
 
   useFrame((state) => {
     if (dotRef.current) {
-      const s = active ? 1.4 : 1 + Math.sin(state.clock.elapsedTime * 3) * 0.12
-      dotRef.current.scale.setScalar(s)
+      const base = active ? 1.4 : hovered ? 1.3 : 1
+      const pulse = Math.sin(state.clock.elapsedTime * 3) * 0.12
+      dotRef.current.scale.setScalar(base + (active ? 0 : pulse))
     }
   })
 
   return (
-    <group position={position} name="hotspot" userData={{ feature }}>
+    <group
+      position={position}
+      name="hotspot"
+      userData={{ feature }}
+      onClick={handleClick}
+      onPointerOver={handlePointerOver}
+      onPointerOut={handlePointerOut}
+    >
       <mesh ref={dotRef} name="hotspot" userData={{ feature }} position={[0, 0, 0.002]}>
         <sphereGeometry args={[0.08, 24, 24]} />
         <meshBasicMaterial
-          color={active ? '#ff3333' : '#ffffff'}
+          color={active ? '#ff3333' : hovered ? '#ff6666' : '#ffffff'}
           transparent
-          opacity={active ? 1 : 0.7}
+          opacity={active ? 1 : hovered ? 0.9 : 0.7}
         />
       </mesh>
       <mesh name="hotspot" userData={{ feature }} position={[0, 0, 0.001]}>
         <ringGeometry args={[0.10, 0.14, 48]} />
         <meshBasicMaterial
-          color={active ? '#ff3333' : '#ffffff'}
+          color={active ? '#ff3333' : hovered ? '#ff6666' : '#ffffff'}
           transparent
-          opacity={0.5}
+          opacity={hovered ? 0.8 : 0.5}
           side={THREE.DoubleSide}
         />
       </mesh>
+      {/* Larger invisible hit area for easier clicking */}
+      <mesh visible={false}>
+        <sphereGeometry args={[0.18, 16, 16]} />
+        <meshBasicMaterial transparent opacity={0} />
+      </mesh>
+      {/* Tooltip on hover */}
+      <HotspotTooltip
+        position={[0, 0, 0]}
+        feature={feature}
+        active={active}
+        hovered={hovered}
+      />
     </group>
   )
 }
 
 /* ─── Main Export ─── */
-export default function PhoneModel({ activeFeature }) {
+export default function PhoneModel({ activeFeature, onHotspotClick }) {
   return (
     <group scale={0.75}>
       {/* Metallic frame */}
@@ -359,26 +398,31 @@ export default function PhoneModel({ activeFeature }) {
         position={[0, 0.2, BODY_D / 2 + 0.008]}
         feature="display"
         active={activeFeature === 'display'}
+        onClick={onHotspotClick}
       />
       <HotspotDot
         position={[0.4, 0.85, -(BODY_D / 2) - 0.008]}
         feature="camera"
         active={activeFeature === 'camera'}
+        onClick={onHotspotClick}
       />
       <HotspotDot
         position={[0, -0.6, BODY_D / 2 + 0.008]}
         feature="processor"
         active={activeFeature === 'processor'}
+        onClick={onHotspotClick}
       />
       <HotspotDot
         position={[-(BODY_W / 2 + 0.008), BODY_H / 2 - 0.35, 0]}
         feature="triggers"
         active={activeFeature === 'triggers'}
+        onClick={onHotspotClick}
       />
       <HotspotDot
         position={[0, -(BODY_H / 2) - 0.008, 0]}
         feature="battery"
         active={activeFeature === 'battery'}
+        onClick={onHotspotClick}
       />
     </group>
   )

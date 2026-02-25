@@ -1,6 +1,4 @@
-import { useRef, useState } from 'react'
-import { useFrame, useThree } from '@react-three/fiber'
-import * as THREE from 'three'
+import { Html } from '@react-three/drei'
 
 const TOOLTIP_DATA = {
   display: { label: '120Hz AMOLED', desc: 'Tap to explore' },
@@ -10,35 +8,55 @@ const TOOLTIP_DATA = {
   battery: { label: '6000mAh Battery', desc: 'Tap to explore' },
 }
 
-export function HotspotTooltip({ position, feature, active, hovered }) {
-  const groupRef = useRef()
-  const { camera } = useThree()
-  const data = TOOLTIP_DATA[feature]
+const tooltipStyle = {
+  background: 'rgba(10, 10, 20, 0.92)',
+  border: '1px solid rgba(255, 10, 10, 0.5)',
+  borderRadius: '8px',
+  padding: '8px 14px',
+  pointerEvents: 'none',
+  whiteSpace: 'nowrap',
+  transform: 'translateY(-120%)',
+  backdropFilter: 'blur(8px)',
+  boxShadow: '0 4px 20px rgba(255, 0, 0, 0.15)',
+}
 
-  useFrame(() => {
-    if (groupRef.current) {
-      groupRef.current.quaternion.copy(camera.quaternion)
-    }
-  })
+const labelStyle = {
+  color: '#ffffff',
+  fontSize: '13px',
+  fontWeight: 700,
+  fontFamily: "'Inter', 'Segoe UI', sans-serif",
+  margin: 0,
+  lineHeight: 1.3,
+}
+
+const descStyle = {
+  color: '#ff4444',
+  fontSize: '10px',
+  fontWeight: 500,
+  fontFamily: "'Inter', 'Segoe UI', sans-serif",
+  margin: '2px 0 0',
+  lineHeight: 1.2,
+  letterSpacing: '0.5px',
+  textTransform: 'uppercase',
+}
+
+export function HotspotTooltip({ position, feature, active, hovered }) {
+  const data = TOOLTIP_DATA[feature]
 
   if (!hovered || active) return null
 
   return (
-    <group position={position} ref={groupRef}>
-      {/* Background panel */}
-      <mesh position={[0, 0.18, 0]}>
-        <planeGeometry args={[0.6, 0.16]} />
-        <meshBasicMaterial
-          color="#0a0a14"
-          transparent
-          opacity={0.9}
-        />
-      </mesh>
-      {/* Red accent line */}
-      <mesh position={[0, 0.105, 0.001]}>
-        <planeGeometry args={[0.55, 0.008]} />
-        <meshBasicMaterial color="#ff0a0a" transparent opacity={0.8} />
-      </mesh>
-    </group>
+    <Html
+      position={position}
+      center
+      distanceFactor={4}
+      style={{ pointerEvents: 'none' }}
+      zIndexRange={[100, 0]}
+    >
+      <div style={tooltipStyle}>
+        <p style={labelStyle}>{data.label}</p>
+        <p style={descStyle}>{data.desc}</p>
+      </div>
+    </Html>
   )
 }
